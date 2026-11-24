@@ -3,6 +3,7 @@
 // and copies it to /output/entry.png. It never draws or downloads anything
 // at grade time, so the judge sees exactly the bytes committed.
 // (Node 22, standard library only.)
+// The front page itself lives in entry.png; this file only checks it and copies it.
 //
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
@@ -49,6 +50,7 @@ for (const name of readdirSync(outputDir)) {
 
 const destination = join(outputDir, "entry.png");
 copyFileSync(imagePath, destination);
+// A partial copy would fail the byte comparison below before the judge ever sees it.
 const copied = readFileSync(destination);
 if (!copied.equals(image)) fail("entry.png did not copy byte for byte");
 console.log(`wrote entry.png (${width}x${height}, ${image.length} bytes)`);
